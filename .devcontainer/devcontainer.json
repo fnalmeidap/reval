@@ -1,0 +1,80 @@
+{
+	"name": "C++/Python + ROS2 Flying robots devcontainer",
+	"image": "robocin/cpp-osrf-ros-humble-desktop-full:latest",
+	"postCreateCommand": "echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc",
+	"remoteUser": "robocin",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/home/robocin/reval,type=bind,consistency=cached",
+	"workspaceFolder": "/home/robocin/reval",
+	"containerEnv": {
+		"DISPLAY": "${localEnv:DISPLAY}"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// Docker
+				"ms-azuretools.vscode-docker",
+				// Live Share
+				"ms-vsliveshare.vsliveshare",
+				// C/C++ Extension Pack
+				"ms-vscode.cpptools-extension-pack",
+				// Python
+				"ms-python.python",
+				// Python debugger
+				"ms-python.debugpy",
+				// Pylance
+				"ms-python.vscode-pylance",
+				// Python black
+				"ms-python.black-formatter",
+				// clangd
+				"llvm-vs-code-extensions.vscode-clangd",
+				// GitHub Copilot
+				"GitHub.copilot",
+				// Code Spell Checker
+				"streetsidesoftware.code-spell-checker",
+				// Markdown
+				"yzhang.markdown-all-in-one",
+				// YAML
+				"redhat.vscode-yaml"
+			],
+			"settings": {
+				// Code Spell Checker Settings
+				"cSpell.language": "en, pt-BR",
+				"cSpell.words": [
+					"robocin",
+					"RoboCin",
+					"RoboCIn",
+					"RobôCIn"
+				],
+				// Editor Settings 
+				"editor.detectIndentation": true,
+				// Files Settings
+				"files.insertFinalNewline": true,
+				
+				"[python]": {
+					"editor.insertSpaces": true,
+					"editor.tabSize": 2,
+					"editor.formatOnSave": true,
+					"editor.defaultFormatter": "ms-python.black-formatter"	
+				},
+				// JSON Settings 
+				"[json]": {
+					"editor.insertSpaces": true,
+					"editor.tabSize": 2,
+					"editor.formatOnSave": true,
+					"editor.defaultFormatter": "vscode.json-language-features"
+				},
+				// YAML Settings
+				"[yaml]": { 
+					"editor.insertSpaces": true,
+					"editor.tabSize": 2,
+					"editor.formatOnSave": true,
+					"editor.defaultFormatter": "redhat.vscode-yaml" 
+				},
+				// Markdown settings
+				"[markdown]": { 
+					"editor.formatOnSave": true
+				}
+			}
+		}
+	}
+}
