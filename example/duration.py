@@ -1,13 +1,14 @@
-from reval import monitor
+from reval import reval
 import time
 
 
-@monitor.duration("example.compute")
+@reval.monitor("example.compute")
 def compute():
+    reval.add_metadata({"task": "computelol"})
     time.sleep(0.02)
 
 
-@monitor.duration("example.compute_heavy")
+@reval.monitor("example.compute_heavy")
 def compute_heavy():
     time.sleep(0.05)
 
