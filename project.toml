@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reval"
+version = "0.1.0"
+description = "Runtime instrumentation and monitoring library for Python applications."
+readme = "README.md"
+authors = [
+    { name = "Felipe Nunes de Almeida Pereira" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+
+dependencies = [
+    "protobuf>=4.0.0"   # Enable only if you want protobuf over UDP.
+]
+
+[project.urls]
+Homepage = "https://github.com/fnalmeidap/reval"
+Documentation = "https://github.com/fnalmeidap/reval"
+Source = "https://github.com/fnalmeidap/reval"
+
+[tool.setuptools]
+package-dir = { "" = "reval" }
+
+[tool.setuptools.packages.find]
+where = ["reval"]

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package reval.metrics;
+
+message Duration {
+    string name = 1;
+    float duration_ms = 2;
+}

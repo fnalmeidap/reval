@@ -1,7 +1,7 @@
 {
 	"name": "C++/Python + ROS2 Flying robots devcontainer",
-	"image": "robocin/cpp-osrf-ros-humble-desktop-full:latest",
-	"postCreateCommand": "echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc",
+	"image": "ros2-jazzy-python-cpp-local:latest",
+	"postCreateCommand": "echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc",
 	"remoteUser": "robocin",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/home/robocin/reval,type=bind,consistency=cached",
 	"workspaceFolder": "/home/robocin/reval",
