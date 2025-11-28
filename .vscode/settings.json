@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "rclpy"
-    ]
+    ],
+    "dotnet.defaultSolution": "RevalService.sln"
 }

@@ -1,7 +1,6 @@
 import json
 import threading
 from .network.udp_socket import UdpSocketSender
-from .proto.messages import Duration
 
 
 class RevalPublisher:
