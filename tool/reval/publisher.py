@@ -1,6 +1,8 @@
 import json
 import threading
 from .network.udp_socket import UdpSocketSender
+from .file.storage import _write_log
+
 
 
 class RevalPublisher:
@@ -20,9 +22,11 @@ class RevalPublisher:
 
     def publish_metric(self, name: str, duration_ms: float, metadata: dict = {}):
         duration_data = {}
-        duration_data["name"] = name
+        duration_data["scope"] = name
         duration_data["duration_ms"] = duration_ms
-        duration_data["metadata"] = metadata
+        duration_data["meta"] = metadata
 
-        bytes_data = json.dumps(duration_data).encode("utf-8")
-        self.message_sender.send_metric(bytes_data)
+        json_data = json.dumps(duration_data)
+        bytes_data = json_data.encode("utf-8")
+        _write_log(f"{json_data}")
+        # self.message_sender.send_metric(bytes_data)

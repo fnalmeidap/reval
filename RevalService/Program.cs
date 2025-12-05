@@ -1,6 +1,5 @@
 ﻿using System.Net.Sockets;
 using Reval.Services.MonitorListenerService;
-using Reval.Message;
 using Reval.Hubs;
 using System.Net;
 
@@ -22,7 +21,7 @@ builder.Services.AddSignalR()
 
 builder.Services.AddSingleton(serviceProvider =>
 {
-    var endpoint = new IPEndPoint(IPAddress.Any, 5005); // 0.0.0.0
+    var endpoint = new IPEndPoint(IPAddress.Any, 5005);
     return new UdpClient(endpoint);
 });
     

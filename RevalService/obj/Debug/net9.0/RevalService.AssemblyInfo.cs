@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RevalService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15c0e762ba39d12bf55822a956fd3cd56f2e60fe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc6d45278f3b5eb4e38ffbcb1de6aba821574ca2")]
 [assembly: System.Reflection.AssemblyProductAttribute("RevalService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RevalService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
