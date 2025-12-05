@@ -1,6 +1,8 @@
 from reval import reval
+from reval import settings
 import time
 
+settings.setup(host="127.0.0.1", port=7122)
 
 @reval.monitor("example.compute")
 def compute_reval():
@@ -15,5 +17,5 @@ def run_n_times(n: int, func: callable):
         func()
 
 if __name__ == "__main__":
-    N = 1000
+    N = 10
     run_n_times(N, compute_reval)

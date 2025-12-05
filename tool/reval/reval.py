@@ -3,14 +3,17 @@ from functools import wraps
 from .publisher import RevalPublisher
 
 TO_MILLISECONDS = 1e-6
-LATEST_ELEMENT = -1
+LAST_ELEMENT = -1
 
 _metadata_stack = []
 
 def add_metadata(data: dict):
-    """Add metadata to the current context."""
+    """Add a dict metadata to the current context."""
+    if not isinstance(data, dict):
+        return
+    
     if _metadata_stack:
-        _metadata_stack[LATEST_ELEMENT].update(data)
+        _metadata_stack[LAST_ELEMENT].update(data)
 
 def monitor(name: str):
     """Decorator for measuring execution time of a function."""

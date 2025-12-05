@@ -1,6 +1,6 @@
 import socket
 import threading
-from reval import config
+from reval import settings
 
 
 class UdpSocketSender:
@@ -9,7 +9,8 @@ class UdpSocketSender:
 
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.addr = (config.PUBLISHER_HOST, config.PUBLISHER_PORT)
+        self.addr = (settings.MONITORING_SERVER_HOST, settings.MONITORING_SERVER_PORT)
+        print(f"UDP Socket Sender initialized to {self.addr}")
 
     @classmethod
     def get_instance(cls):
