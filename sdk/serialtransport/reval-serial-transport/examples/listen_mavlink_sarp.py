@@ -2,6 +2,9 @@ import time
 from reval.serial.transport._transceiver import SerialTransceiver
 from reval.serial.transport._eventbus import EventBus, MessageType
 
+from reval.serial.transport import SerialTransceiver
+from reval.serial.transport import EventBus, MessageType
+
 bus = EventBus()
 transceiver = SerialTransceiver('/dev/pts/7', 115200, bus)
 
