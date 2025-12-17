@@ -3,6 +3,7 @@ using Reval.Telemetry.Gateway.Ingestion.MonitorListener;
 using Reval.Telemetry.Gateway.Hubs;
 using System.Net;
 
+// Setup configuration from .yaml file
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -19,6 +20,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR()
     .AddMessagePackProtocol();
 
+// Setup client ip/port binding from .yaml config file
 builder.Services.AddSingleton(serviceProvider =>
 {
     var endpoint = new IPEndPoint(IPAddress.Any, 5005);

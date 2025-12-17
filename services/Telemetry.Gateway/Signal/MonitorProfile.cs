@@ -30,4 +30,3 @@ public class MonitorProfile : ISignal
     /// </summary>
     public ProfileStatus Status { get; set; }
 }
-

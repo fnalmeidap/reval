@@ -27,4 +27,3 @@ public class ExecutionOutcome : ISignal
     /// </summary>
     public ScopeOutcome Outcome { get; set; }
 }
-
