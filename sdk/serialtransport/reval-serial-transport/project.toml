@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "revalmonitor"
-version = "0.2.0"
-description = "Runtime instrumentation and monitoring library for Python applications."
+name = "reval-serial-transport"
+version = "0.1.0"
+description = "Serial data transport instrumentation MAVLINK Python applications."
 readme = "README.md"
 authors = [
     { name = "Felipe Nunes de Almeida Pereira" }
@@ -14,7 +14,8 @@ license = { text = "MIT" }
 requires-python = ">=3.10"
 
 dependencies = [
-    "protobuf>=4.0.0"   # Enable only if you want protobuf over UDP.
+    "pymavlink",
+    "pyserial"
 ]
 
 [project.urls]
