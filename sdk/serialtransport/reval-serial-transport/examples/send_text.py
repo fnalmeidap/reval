@@ -1,8 +1,7 @@
-# sender.py
 import serial
 import time
 
-PORT = "/dev/pts/6"   # change to your PTY
+PORT = "/dev/pts/6"
 BAUDRATE = 115200
 
 ser = serial.Serial(PORT, BAUDRATE, timeout=1)
