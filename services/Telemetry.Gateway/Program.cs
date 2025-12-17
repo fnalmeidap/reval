@@ -1,13 +1,13 @@
 ﻿using System.Net.Sockets;
-using Reval.Services.MonitorListenerService;
-using Reval.Hubs;
+using Reval.Telemetry.Gateway.Ingestion.MonitorListener;
+using Reval.Telemetry.Gateway.Hubs;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddDefaultPolicy(policy =>  
         policy
             .AllowAnyHeader()
             .AllowAnyMethod()
@@ -25,12 +25,12 @@ builder.Services.AddSingleton(serviceProvider =>
     return new UdpClient(endpoint);
 });
     
-builder.Services.AddHostedService<MonitorListenerService>();
+builder.Services.AddHostedService<MonitorListener>();
 
 var app = builder.Build();
 
 app.UseCors();
 
-app.MapHub<FrameHub>("/framehub");
+app.MapHub<Frame>("/framehub");
 
 app.Run();

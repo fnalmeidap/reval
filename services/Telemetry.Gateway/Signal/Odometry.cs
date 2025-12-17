@@ -1,4 +1,4 @@
-namespace Reval.Signal;
+namespace Reval.Telemetry.Gateway.Signal;
 
 public class Odometry : ISignal
 {

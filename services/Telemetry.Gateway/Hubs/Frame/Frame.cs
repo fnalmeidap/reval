@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.SignalR;
 
-namespace Reval.Hubs;
+namespace Reval.Telemetry.Gateway.Hubs;
 
-public class FrameHub : Hub
+public class Frame : Hub
 {
     // You can extend this later if needed
 }

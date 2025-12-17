@@ -1,25 +1,26 @@
 using System.Net.Sockets;
 using Microsoft.AspNetCore.SignalR;
-using Reval.Hubs;
+using Reval.Telemetry.Gateway.Hubs;
 
-namespace Reval.Services.MonitorListenerService;
+namespace Reval.Telemetry.Gateway.Ingestion.MonitorListener;
 
-public class MonitorListenerService : BackgroundService
+public class MonitorListener : BackgroundService
 {
-    private readonly ILogger<MonitorListenerService> logger;
-    private readonly UdpClient monitorListener;
-    private readonly IHubContext<FrameHub> hub;
+    private readonly ILogger<MonitorListener> logger;
+    private readonly UdpClient client;
+    private readonly IHubContext<Frame> hub;
     
-    public MonitorListenerService(ILogger<MonitorListenerService> logger, UdpClient monitorListener, IHubContext<FrameHub> hub)
+    public MonitorListener(ILogger<MonitorListener> logger, UdpClient client, IHubContext<Frame> hub)
     {
-        this.monitorListener = monitorListener;
+        this.client = client;
         this.logger = logger;
         this.hub = hub;
     }
 
+    // TODO: handle mutiple connections and message types
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            logger.LogInformation($"UDP Listener started on {monitorListener.Client.LocalEndPoint}");
+            logger.LogInformation($"UDP client listening on {client.Client.LocalEndPoint}");
 
         try
         {
@@ -27,7 +28,7 @@ public class MonitorListenerService : BackgroundService
             {
                 try
                 {
-                    var result = await monitorListener.ReceiveAsync(stoppingToken);
+                    var result = await client.ReceiveAsync(stoppingToken);
                     var bytes = result.Buffer;
 
                     await hub.Clients.All.SendAsync("ReceiveFrame", bytes);
@@ -47,14 +48,14 @@ public class MonitorListenerService : BackgroundService
         }
         finally
         {
-            monitorListener.Close();
+            client.Close();
             logger.LogInformation("UDP Listener stopped");
         }
     }
 
     public override void Dispose()
     {
-        monitorListener.Close();
+        client.Close();
         base.Dispose();
     }
 }

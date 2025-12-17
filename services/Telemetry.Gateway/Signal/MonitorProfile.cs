@@ -1,10 +1,11 @@
-namespace Reval.Signal;
+namespace Reval.Telemetry.Gateway.Signal;
 
 public enum ProfileStatus
 {
     Unknown = 0,
     Executing = 1,
-    Crashed = 2,
+    Finished = 2,
+    Crashed = 3,
 }
 
 public class MonitorProfile : ISignal

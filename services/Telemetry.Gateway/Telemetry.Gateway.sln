@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevalService", "RevalService.csproj", "{AD7AB800-056D-80C3-4793-D5DB6AFEFCBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telemetry.Gateway", "Telemetry.Gateway.csproj", "{A507BE0F-F7DE-DEA4-8749-B4FE19F262F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AD7AB800-056D-80C3-4793-D5DB6AFEFCBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD7AB800-056D-80C3-4793-D5DB6AFEFCBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD7AB800-056D-80C3-4793-D5DB6AFEFCBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD7AB800-056D-80C3-4793-D5DB6AFEFCBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A507BE0F-F7DE-DEA4-8749-B4FE19F262F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A507BE0F-F7DE-DEA4-8749-B4FE19F262F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A507BE0F-F7DE-DEA4-8749-B4FE19F262F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A507BE0F-F7DE-DEA4-8749-B4FE19F262F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {53F35FA1-F11B-4843-A733-B401F9A83727}
+		SolutionGuid = {01235822-69E0-4F3B-8226-FF63A36A1949}
 	EndGlobalSection
 EndGlobal
