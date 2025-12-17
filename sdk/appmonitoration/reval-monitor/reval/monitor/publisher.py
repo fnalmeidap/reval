@@ -1,8 +1,6 @@
 import json
 import threading
 from .network.udp_socket import UdpSocketSender
-from .proto.messages import Duration
-
 
 class RevalPublisher:
     _instance = None
@@ -21,9 +19,9 @@ class RevalPublisher:
 
     def publish_metric(self, name: str, duration_ms: float, metadata: dict = {}):
         duration_data = {}
-        duration_data["name"] = name
+        duration_data["scope"] = name
         duration_data["duration_ms"] = duration_ms
-        duration_data["metadata"] = metadata
+        duration_data["meta"] = metadata
 
-        bytes_data = json.dumps(duration_data).encode("utf-8")
-        self.message_sender.send_metric(bytes_data)
+        json_data = json.dumps(duration_data).encode("utf-8")
+        self.message_sender.send_metric(json_data)

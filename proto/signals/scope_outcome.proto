@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+enum ScopeOutcome {
+    UNKNOWN = 0;
+    SUCCESS = 1;
+    FAIL = 2;
+}
+
+message Scope {
+    google.protobuf.Timestamp timestamp = 1;
+    string name = 2;
+    long duration = 3;
+    ScopeOutcome status = 4;
+}
