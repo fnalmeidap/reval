@@ -55,11 +55,7 @@ class MAVLinkParser:
         if len(byte_buffer) < packet_len:
             return None, 0
         
+        # TODO: Consider checksum validation here
         candidate_data = byte_buffer[:packet_len]
 
-        msgs = self.mav.parse_buffer(candidate_data)
-
-        if msgs:
-            return msgs[0], packet_len
-        
-        return None, -1
+        return candidate_data, packet_len
