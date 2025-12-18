@@ -3,7 +3,7 @@ from typing import Callable, Dict, List, Any
 
 class MessageType(Enum):
     MAVLINK = auto()
-    SARP = auto()
+    TEXT = auto()
 
 class EventBus:
     def __init__(self):

@@ -1,4 +1,4 @@
-class SARPParser:
+class TextParser:
     def try_parse(self, byte_buffer: bytes):
         try:
             newline_idx = byte_buffer.find(b'\n')

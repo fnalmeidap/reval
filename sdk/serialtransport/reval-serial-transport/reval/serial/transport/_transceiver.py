@@ -1,12 +1,11 @@
 import serial
-import time
 import threading
 
 from ._eventbus import EventBus, MessageType
-from .parsers import MAVLinkParser, SARPParser
+from .parsers import MAVLinkParser, TextParser, MAVLinkVersion
 
 class SerialTransceiver:
-    def __init__(self, port, baud, bus: EventBus):
+    def __init__(self, port = None, baud = 57600, bus: EventBus = None):
         self.port = port
         self.baud = baud
         self.bus = bus
@@ -17,9 +16,12 @@ class SerialTransceiver:
         self.tx_lock = threading.Lock()
 
         self.mav_parser = MAVLinkParser()
-        self.sarp_parser = SARPParser()
+        self.text_parser = TextParser()
 
     def start(self):
+        if self.port is None or self.bus is None:
+            raise ValueError("Please specify both serial port and event bus before starting transceiver.")
+        
         self.running = True
         self.thread = threading.Thread(target=self._rx_loop, daemon=True)
         self.thread.start()
@@ -44,14 +46,14 @@ class SerialTransceiver:
                     consumed = True
                 
                 if not consumed:
-                    msg, length = self.sarp_parser.try_parse(self.buffer)
+                    msg, length = self.text_parser.try_parse(self.buffer)
                     if msg:
-                        self.bus.publish(MessageType.SARP, msg)
+                        self.bus.publish(MessageType.TEXT, msg)
                         self.buffer = self.buffer[length:]
                         consumed = True
 
                 if not consumed and len(self.buffer) > 0:
-                     if self.buffer[0] not in [0xFD, 0xFE] and self.buffer[0] > 127:
+                     if self.buffer[0] not in [MAVLinkVersion.V1, MAVLinkVersion.V2] and self.buffer[0] > 127:
                          self.buffer = self.buffer[1:]
                      elif len(self.buffer) > 2048:
                          self.buffer = self.buffer[1:]
@@ -59,20 +61,18 @@ class SerialTransceiver:
         except Exception as e:
             print(f"SerialTransceiver error: {e}")
 
-    def send_sarp(self, sarp_msg: str):
-        if not sarp_msg.endswith('\n'):
-            sarp_msg += '\n'
+    def send_text(self, text_msg: str):
+        if not text_msg.endswith('\n'):
+            text_msg += '\n'
 
-        payload = sarp_msg.encode('utf-8')
+        payload = text_msg.encode('utf-8')
         self.send_raw(payload)
 
-    def send_mavlink(self, msg_obj):
+    def send_mavlink(self, msg_bytes: bytes):
         try:
-            payload = msg_obj.pack(self.mav_parser.mav)
-            self.send_raw(payload)
+            self.send_raw(msg_bytes)
         except Exception as e:
             print(f"Error packing MAVLink message: {e}")
-            return
 
     def send_raw(self, payload: bytes):
         try:
