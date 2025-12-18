@@ -21,7 +21,7 @@ def on_text(text):
     print(f"[SARP]: {text}")
 
 bus.subscribe(MessageType.MAVLINK, on_mavlink)
-bus.subscribe(MessageType.SARP, on_text)
+bus.subscribe(MessageType.TEXT, on_text)
 
 transceiver.start()
 

@@ -1,8 +1,14 @@
 import serial
 import threading
+import logging
 
 from ._eventbus import EventBus, MessageType
+from ._logging_config import configure_logging
 from .parsers import MAVLinkParser, TextParser, MAVLinkVersion
+
+configure_logging()
+
+logger = logging.getLogger(__name__)
 
 class SerialTransceiver:
     def __init__(self, port = None, baud = 57600, bus: EventBus = None):
@@ -27,7 +33,7 @@ class SerialTransceiver:
         self.thread.start()
 
     def _rx_loop(self):
-        print("SerialTransceiver RX loop started.")
+        logger.info("SerialTransceiver RX loop started.")
         try:
             while self.running:
                 chunk = self.ser.read(128)
