@@ -17,7 +17,7 @@ class Payload:
     data: bytes
     msg_type: MessageType = UNKNOWN
 
-class RadioGateway():
+class Gateway():
     def __init__(self, serial_bus: SerialBus):
         self._subscribers = {}
         self._serial_bus = SerialBus()
