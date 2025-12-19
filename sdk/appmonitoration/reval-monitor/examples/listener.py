@@ -1,10 +1,11 @@
 import socket
-from reval import config
+from reval.monitor import MONITORING_SERVER_HOST, MONITORING_SERVER_PORT
 
+port = 1234
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((config.PUBLISHER_HOST, config.PUBLISHER_PORT))
+sock.bind((MONITORING_SERVER_HOST, port))
 
-print(f"Listening on UDP {config.PUBLISHER_HOST}:{config.PUBLISHER_PORT}")
+print(f"Listening on UDP 0.0.0.0:{port}")
 
 while True:
     data, addr = sock.recvfrom(4096)  # max UDP packet size

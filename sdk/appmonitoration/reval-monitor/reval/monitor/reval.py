@@ -1,6 +1,9 @@
 import time
+import logging
 from functools import wraps
-from .publisher import RevalPublisher
+from ._publisher import RevalPublisher, UdpSocketSingleton
+
+logger = logging.getLogger(__name__)
 
 TO_MILLISECONDS = 1e-6
 LAST_ELEMENT = -1
@@ -17,7 +20,6 @@ def add_metadata(data: dict):
 
 def monitor(name: str):
     """Decorator for measuring execution time of a function."""
-
     publisher = RevalPublisher.get_instance()
 
     def decorator(func):
@@ -38,3 +40,6 @@ def monitor(name: str):
         return wrapper
 
     return decorator
+
+def set_server_port(port: int):
+    UdpSocketSingleton.set_port(port)

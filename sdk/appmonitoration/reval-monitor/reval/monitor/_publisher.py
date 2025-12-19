@@ -1,13 +1,13 @@
 import json
 import threading
-from .network.udp_socket import UdpSocketSender
+from .network import UdpSocketSingleton
 
 class RevalPublisher:
     _instance = None
     _lock = threading.Lock()
 
     def __init__(self):
-        self.message_sender = UdpSocketSender.get_instance()
+        pass
 
     @classmethod
     def get_instance(cls):
@@ -24,4 +24,4 @@ class RevalPublisher:
         duration_data["meta"] = metadata
 
         json_data = json.dumps(duration_data).encode("utf-8")
-        self.message_sender.send_metric(json_data)
+        UdpSocketSingleton.send_metric(json_data)
