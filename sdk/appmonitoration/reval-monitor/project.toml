@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reval-monitor"
-version = "0.3.0"
+version = "0.4.0"
 description = "Runtime instrumentation and monitoring library for Python applications."
 readme = "README.md"
 authors = [
