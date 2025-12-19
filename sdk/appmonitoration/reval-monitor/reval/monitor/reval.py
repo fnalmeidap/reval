@@ -1,9 +1,6 @@
 import time
-import logging
 from functools import wraps
 from ._publisher import RevalPublisher, UdpSocketSingleton
-
-logger = logging.getLogger(__name__)
 
 TO_MILLISECONDS = 1e-6
 LAST_ELEMENT = -1

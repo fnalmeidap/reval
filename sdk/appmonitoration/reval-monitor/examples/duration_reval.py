@@ -8,6 +8,7 @@ def compute_reval():
     reval.add_metadata({
         "task": "computation_outside",
     })
+    time.sleep(0.5)
 
 @reval.monitor("example.compute_inner")
 def run_n_times(n: int, func: callable):

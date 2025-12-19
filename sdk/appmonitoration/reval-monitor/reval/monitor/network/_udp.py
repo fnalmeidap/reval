@@ -1,8 +1,5 @@
 import socket
 import threading
-import logging
-
-logger = logging.getLogger(__name__)
 
 _ALL_INTERFACES = "0.0.0.0"
 _DEFAULT_MONITORING_SERVER_PORT = 7222
