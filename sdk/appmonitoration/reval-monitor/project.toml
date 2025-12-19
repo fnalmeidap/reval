@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "revalmonitor"
-version = "0.2.0"
+name = "reval-monitor"
+version = "0.4.0"
 description = "Runtime instrumentation and monitoring library for Python applications."
 readme = "README.md"
 authors = [
@@ -13,9 +13,7 @@ authors = [
 license = { text = "MIT" }
 requires-python = ">=3.10"
 
-dependencies = [
-    "protobuf>=4.0.0"   # Enable only if you want protobuf over UDP.
-]
+dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/fnalmeidap/reval"
