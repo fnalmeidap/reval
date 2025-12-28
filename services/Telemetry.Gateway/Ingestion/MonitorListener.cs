@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using Microsoft.AspNetCore.SignalR;
+using Reval.Telemetry.Gateway.Configuration;
 using Reval.Telemetry.Gateway.Hubs;
 
 namespace Reval.Telemetry.Gateway.Ingestion.MonitorListener;
@@ -9,12 +10,14 @@ public class MonitorListener : BackgroundService
     private readonly ILogger<MonitorListener> logger;
     private readonly UdpClient client;
     private readonly IHubContext<Frame> hub;
+    private readonly IConfiguration configuration;
     
-    public MonitorListener(ILogger<MonitorListener> logger, UdpClient client, IHubContext<Frame> hub)
+    public MonitorListener(ILogger<MonitorListener> logger, UdpClient client, IHubContext<Frame> hub, IConfiguration configuration)
     {
         this.client = client;
         this.logger = logger;
         this.hub = hub;
+        this.configuration = configuration;
     }
 
     // TODO: handle mutiple connections and message types

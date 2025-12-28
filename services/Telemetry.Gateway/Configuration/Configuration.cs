@@ -5,7 +5,7 @@ public sealed class Networking
     public required int AppMonitorationPort { get; set; }
 }
 
-public sealed class Configuration
+public sealed class AppSettings
 {
     public required string AppName { get; set; }
     public required string Version { get; set; }
