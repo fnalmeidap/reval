@@ -1,6 +1,5 @@
-from ._configuration import config, MONITORING_SERVER_HOST, MONITORING_SERVER_PORT
+from .reval import monitor, add_metadata, set_server_port
 
 __all__ = [
-    "config",
     "reval",
 ]
