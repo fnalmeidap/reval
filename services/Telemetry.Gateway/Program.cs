@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Threading.Channels;
 using Reval.Telemetry.Gateway.Ingestion.MonitorListener;
 using Reval.Telemetry.Gateway.Configuration;
 using Reval.Telemetry.Gateway.Hubs;
@@ -25,13 +26,25 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR()
     .AddMessagePackProtocol();
 
-// Setup client ip/port binding from .yaml config file
 builder.Services.AddSingleton(serviceProvider =>
 {
     var config = serviceProvider
         .GetRequiredService<IOptions<AppSettings>>().Value;
 
-    var endpoint = new IPEndPoint(IPAddress.Any, config.Networking.AppMonitorationPort);
+    return Channel.CreateBounded<byte[]>(new BoundedChannelOptions(config.ChannelSettings.Capacity)
+    {
+        SingleReader = config.ChannelSettings.SingleReader,
+        SingleWriter = config.ChannelSettings.SingleWriter,
+        FullMode = BoundedChannelFullMode.DropOldest
+    });
+});
+
+builder.Services.AddSingleton(serviceProvider =>
+{
+    var config = serviceProvider
+        .GetRequiredService<IOptions<AppSettings>>().Value;
+
+    var endpoint = new IPEndPoint(IPAddress.Any, config.NetworkSettings.AppMonitorationPort);
     return new UdpClient(endpoint);
 });
     
