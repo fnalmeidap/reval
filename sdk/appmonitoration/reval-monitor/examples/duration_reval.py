@@ -3,14 +3,14 @@ from reval.monitor import reval
 
 reval.set_server_port(1234)
 
-@reval.monitor("example.compute")
+@reval.monitor("reval.example.compute")
 def compute_reval():
     reval.add_metadata({
-        "task": "computation_outside",
+        "task": "2ms computation",
     })
-    time.sleep(0.5)
+    time.sleep(0.2)
 
-@reval.monitor("example.compute_inner")
+@reval.monitor("reval.example.run_n_times")
 def run_n_times(n: int, func: callable):
     for _ in range(n):
         func()

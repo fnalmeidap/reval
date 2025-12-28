@@ -5,6 +5,7 @@ TO_MILLISECONDS = 1e-6
 def compute_reval():
     a = {}
     a["data"] = 10
+    time.sleep(0.2)
 
 def run_n_times(n: int, func: callable):
     for _ in range(n):
