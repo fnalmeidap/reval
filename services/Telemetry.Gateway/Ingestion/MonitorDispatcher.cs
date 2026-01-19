@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Channels;
 using Reval.Telemetry.Gateway.Observability.Loki;
+using Reval.Telemetry.Gateway.Storage.InfluxDB;
 
 namespace Reval.Telemetry.Gateway.Ingestion.MonitorDispatcher;
 
@@ -13,12 +14,19 @@ public sealed class MonitorDispatcherService : BackgroundService
     private readonly ChannelReader<byte[]> reader;
     private readonly ILokiClient lokiClient;
     private readonly IConfiguration config;
+    private readonly IInfluxWriter influxWriter;
 
-    public MonitorDispatcherService(ILogger<MonitorDispatcherService> logger, Channel<byte[]> channel, ILokiClient lokiClient, IConfiguration config)
+    public MonitorDispatcherService(
+        ILogger<MonitorDispatcherService> logger,
+        Channel<byte[]> channel,
+        ILokiClient lokiClient,
+        IInfluxWriter influxWriter,
+        IConfiguration config)
     {
         this.logger = logger;
         reader = channel.Reader;
         this.lokiClient = lokiClient;
+        this.influxWriter = influxWriter;
         this.config = config;
     }
 
@@ -35,6 +43,10 @@ public sealed class MonitorDispatcherService : BackgroundService
                 {
                     logger.LogInformation($"Dispatching {batch.Count} log entries to Loki");
                     await lokiClient.PushAsync(batch, cancellationToken);
+                    foreach (var entry in batch)
+                    {
+                        await influxWriter.WriteAsync(entry, cancellationToken);
+                    }
                     batch.Clear();
                 }
             }

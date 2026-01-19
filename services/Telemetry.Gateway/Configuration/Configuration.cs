@@ -18,6 +18,14 @@ public sealed class LokiSettings
     public required string Endpoint { get; set; }
 }
 
+public sealed class InfluxSettings
+{
+    public string Url { get; init; } = string.Empty;
+    public string Token { get; init; } = string.Empty;
+    public string Org { get; init; } = string.Empty;
+    public string Bucket { get; init; } = string.Empty;
+}
+
 public sealed class AppSettings
 {
     public required string AppName { get; set; }
@@ -25,4 +33,5 @@ public sealed class AppSettings
     public required NetworkSettings NetworkSettings { get; set; }
     public required ChannelSettings ChannelSettings { get; set; }
     public required LokiSettings LokiSettings { get; set; }
+    public required InfluxSettings InfluxSettings { get; set; }
 }

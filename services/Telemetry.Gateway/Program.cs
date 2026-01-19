@@ -7,14 +7,25 @@ using System.Net;
 using Microsoft.Extensions.Options;
 using Reval.Telemetry.Gateway.Ingestion.MonitorDispatcher;
 using Reval.Telemetry.Gateway.Observability.Loki;
+using InfluxDB.Client;
+using Reval.Telemetry.Gateway.Storage.InfluxDB;
+using DotNetEnv;
+
+Env.Load();
 
 // Setup configuration from .yaml file
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+builder.Services.Configure<AppSettings>(
+    builder.Configuration.GetSection("AppSettings"));
 builder.Services.Configure<LokiSettings>(
     builder.Configuration.GetSection("AppSettings:LokiSettings"));
+builder.Services.Configure<InfluxSettings>(
+    builder.Configuration.GetSection("AppSettings:InfluxSettings"));
 
 builder.Services.AddCors(options =>
 {
@@ -29,6 +40,24 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSignalR()
     .AddMessagePackProtocol();
+
+builder.Services.AddSingleton(static sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<InfluxSettings>>().Value;
+
+    return InfluxDBClientFactory.Create(
+        settings.Url,
+        settings.Token.ToCharArray()
+    );
+});
+
+builder.Services.AddSingleton<IInfluxWriter>(sp =>
+{
+    var client = sp.GetRequiredService<InfluxDBClient>();
+    var settings = sp.GetRequiredService<IOptions<InfluxSettings>>().Value;
+
+    return new InfluxWriter(client, settings);
+});
 
 builder.Services.AddSingleton(serviceProvider =>
 {
