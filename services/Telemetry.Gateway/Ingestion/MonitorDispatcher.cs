@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Channels;
@@ -46,18 +47,35 @@ public sealed class MonitorDispatcherService : BackgroundService
             .Parse(Encoding.UTF8.GetString(bytes))
             .RootElement;
 
-        return new LokiLogEntry
+        Console.WriteLine($"Monitor Signal: {monitorSignal}");
+
+        try
         {
-            Timestamp = monitorSignal.GetProperty("timestamp").GetInt64(),
-            Labels = new Dictionary<string, string>
+            var timestamp = monitorSignal.GetProperty("timestamp").GetDecimal().ToString();
+            var labels = new Dictionary<string, string>
             {
                 { "scope", monitorSignal.GetProperty("scope").GetString() ?? "unknown" }
-            },
-            Line = JsonSerializer.Serialize(new Dictionary<string, string>
+            };
+
+            var line = JsonSerializer.Serialize(new Dictionary<string, string>
             {
-                { "duration_ms", monitorSignal.GetProperty("duration_ms").GetString() ?? string.Empty },
-                { "meta", monitorSignal.GetProperty("meta").GetString() ?? string.Empty }
-            })
-        };
+
+                { "duration_ms", monitorSignal.GetProperty("duration_ms").GetDecimal().ToString() ?? string.Empty },
+                { "meta", monitorSignal.GetProperty("meta").GetRawText() ?? string.Empty }
+            });
+
+            return new LokiLogEntry
+            {
+                Timestamp = timestamp ?? string.Empty,
+                Labels = labels,
+                Line = line
+            };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error parsing monitor signal: {ex.Message}");
+            throw;
+        }
+
     }
 }

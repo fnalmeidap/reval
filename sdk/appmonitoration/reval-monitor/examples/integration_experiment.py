@@ -15,5 +15,6 @@ def run_n_times(n: int, func: callable):
         func()
 
 if __name__ == "__main__":
-    N = 100
-    run_n_times(N, compute_reval)
+    while True:
+        time.sleep(1)
+        compute_reval()
