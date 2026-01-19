@@ -44,7 +44,7 @@ builder.Services.AddSingleton(serviceProvider =>
     var config = serviceProvider
         .GetRequiredService<IOptions<AppSettings>>().Value;
 
-    var endpoint = new IPEndPoint(IPAddress.Any, config.NetworkSettings.AppMonitorationPort);
+    var endpoint = new IPEndPoint(IPAddress.Any, 1234);
     return new UdpClient(endpoint);
 });
     
