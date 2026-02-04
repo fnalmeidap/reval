@@ -1,5 +1,6 @@
 import json
 import threading
+from datetime import datetime, timezone
 from .network import UdpSocketSingleton
 
 class RevalPublisher:
@@ -20,6 +21,7 @@ class RevalPublisher:
     def publish_metric(self, name: str, duration_ms: float, metadata: dict = {}):
         duration_data = {}
         duration_data["scope"] = name
+        duration_data["timestamp"] = datetime.now().timestamp()
         duration_data["duration_ms"] = duration_ms
         duration_data["meta"] = metadata
 

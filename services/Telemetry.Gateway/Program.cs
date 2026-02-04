@@ -1,10 +1,31 @@
 ﻿using System.Net.Sockets;
+using System.Threading.Channels;
 using Reval.Telemetry.Gateway.Ingestion.MonitorListener;
+using Reval.Telemetry.Gateway.Configuration;
 using Reval.Telemetry.Gateway.Hubs;
 using System.Net;
+using Microsoft.Extensions.Options;
+using Reval.Telemetry.Gateway.Ingestion.MonitorDispatcher;
+using Reval.Telemetry.Gateway.Observability.Loki;
+using InfluxDB.Client;
+using Reval.Telemetry.Gateway.Storage.InfluxDB;
+using DotNetEnv;
+
+Env.Load();
 
 // Setup configuration from .yaml file
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+builder.Services.Configure<AppSettings>(
+    builder.Configuration.GetSection("AppSettings"));
+builder.Services.Configure<LokiSettings>(
+    builder.Configuration.GetSection("AppSettings:LokiSettings"));
+builder.Services.Configure<InfluxSettings>(
+    builder.Configuration.GetSection("AppSettings:InfluxSettings"));
 
 builder.Services.AddCors(options =>
 {
@@ -20,14 +41,56 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR()
     .AddMessagePackProtocol();
 
-// Setup client ip/port binding from .yaml config file
+builder.Services.AddSingleton(static sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<InfluxSettings>>().Value;
+
+    return InfluxDBClientFactory.Create(
+        settings.Url,
+        settings.Token.ToCharArray()
+    );
+});
+
+builder.Services.AddSingleton<IInfluxWriter>(sp =>
+{
+    var client = sp.GetRequiredService<InfluxDBClient>();
+    var settings = sp.GetRequiredService<IOptions<InfluxSettings>>().Value;
+
+    return new InfluxWriter(client, settings);
+});
+
 builder.Services.AddSingleton(serviceProvider =>
 {
-    var endpoint = new IPEndPoint(IPAddress.Any, 5005);
+    var config = serviceProvider
+        .GetRequiredService<IOptions<AppSettings>>().Value;
+
+    return Channel.CreateBounded<byte[]>(new BoundedChannelOptions(config.ChannelSettings.Capacity)
+    {
+        SingleReader = config.ChannelSettings.SingleReader,
+        SingleWriter = config.ChannelSettings.SingleWriter,
+        FullMode = BoundedChannelFullMode.DropOldest
+    });
+});
+
+builder.Services.AddSingleton(serviceProvider =>
+{
+    var config = serviceProvider
+        .GetRequiredService<IOptions<AppSettings>>().Value;
+
+    var endpoint = new IPEndPoint(IPAddress.Any, 1234);
     return new UdpClient(endpoint);
+});
+
+builder.Services.AddHttpClient<ILokiClient, LokiClient>((serviceProvider, client) =>
+{
+    var config = serviceProvider
+        .GetRequiredService<IOptions<LokiSettings>>().Value;
+    
+    client.BaseAddress = new Uri(config.Endpoint);
 });
     
 builder.Services.AddHostedService<MonitorListener>();
+builder.Services.AddHostedService<MonitorDispatcherService>();
 
 var app = builder.Build();
 
